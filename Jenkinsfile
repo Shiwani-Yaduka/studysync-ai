@@ -9,6 +9,13 @@ pipeline {
 
     stages {
 
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/Shiwani-Yaduka/studysync-ai.git'
+            }
+        }
+
         stage('Build Backend Image') {
             steps {
                 sh '''
@@ -43,13 +50,9 @@ pipeline {
                     -u $DOCKER_USERNAME --password-stdin
                     '''
 
-                    sh '''
-                    docker push $DOCKER_USER/studysync-backend:latest
-                    '''
+                    sh 'docker push $DOCKER_USER/studysync-backend:latest'
 
-                    sh '''
-                    docker push $DOCKER_USER/studysync-frontend:latest
-                    '''
+                    sh 'docker push $DOCKER_USER/studysync-frontend:latest'
                 }
             }
         }
