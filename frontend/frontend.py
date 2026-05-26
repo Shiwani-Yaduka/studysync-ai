@@ -5,7 +5,7 @@ import pandas as pd
 BACKEND_URL = "http://backend-service:5000"
 
 st.set_page_config(
-    page_title="StudySync AI",
+    page_title="StudySync-AI",
     layout="wide"
 )
 
