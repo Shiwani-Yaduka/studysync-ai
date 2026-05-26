@@ -107,13 +107,17 @@ def start_scheduler(app):
     global _scheduler
 
     # hour = int(os.getenv("SCHEDULER_HOUR", "8"))
-    minute = int(os.getenv("SCHEDULER_MINUTE", "*/1"))
+    # minute = int(os.getenv("SCHEDULER_MINUTE", "0"))
+    hour = None
+    minute = "*/1"
+
     timezone_str = os.getenv("TIMEZONE", "Asia/Kolkata")
 
     _scheduler = BackgroundScheduler(timezone=timezone_str)
     _scheduler.add_job(
         func=run_pipeline,
-        trigger=CronTrigger(hour=hour, minute=minute, timezone=timezone_str),
+        # trigger=CronTrigger(hour=hour, minute=minute, timezone=timezone_str),
+        trigger=CronTrigger(minute=minute, timezone=timezone_str),
         id="daily_calendar_poll",
         name="Daily calendar poll",
         replace_existing=True,
