@@ -123,6 +123,29 @@ def generate_study_guide(topic: str, event_date: str = "") -> str:
     2. Render the synthesis prompt using the Jinja2 template
     3. Call Gemini to produce the Markdown study guide
 
+    You are an expert study mentor and technical educator.
+
+    Create a VERY detailed, beginner-friendly, well-structured study guide for the topic: {topic}
+
+    Requirements:
+
+    Minimum 1500 words
+    Explain concepts deeply
+    Use simple language first, then technical explanation
+    Include definitions
+    Include architecture explanations where applicable
+    Include real-world examples
+    Include practical use cases
+    Include important commands if technical topic
+    Include common interview questions
+    Include best practices
+    Include mistakes beginners make
+    Include a quick revision summary at the end
+    Include a 7-day preparation strategy
+    Use headings and subheadings
+    Use bullet points where useful
+    Make it look like premium study notes
+
     Args:
         topic: The exam topic (e.g., "Azure Cloud")
         event_date: ISO string of the exam date (for display in the guide)
