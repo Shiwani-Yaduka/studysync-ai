@@ -1,3 +1,4 @@
+
 """
 AI Research Agent for StudySync AI.
 Searches the web via Tavily, then synthesises results via Gemini into a study guide.
@@ -83,7 +84,7 @@ def _call_gemini(prompt: str, max_retries: int = 3) -> str:
         raise ValueError("GEMINI_API_KEY environment variable not set")
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")  # Fast, generous free tier
+    model = genai.GenerativeModel("gemini-3.5-flash")  # Fast, generous free tier
 
     for attempt in range(max_retries):
         try:
