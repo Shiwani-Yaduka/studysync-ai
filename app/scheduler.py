@@ -106,8 +106,8 @@ def start_scheduler(app):
     """
     global _scheduler
 
-    hour = int(os.getenv("SCHEDULER_HOUR", "8"))
-    minute = int(os.getenv("SCHEDULER_MINUTE", "0"))
+    # hour = int(os.getenv("SCHEDULER_HOUR", "8"))
+    minute = int(os.getenv("SCHEDULER_MINUTE", "*/1"))
     timezone_str = os.getenv("TIMEZONE", "Asia/Kolkata")
 
     _scheduler = BackgroundScheduler(timezone=timezone_str)
