@@ -1,81 +1,78 @@
 pipeline {
 
-```
-agent any
+    agent any
 
-environment {
-    DOCKER_USER = "shiwanishinedocker"
-    K3S_SERVER = "52.4.197.67"
-}
-
-stages {
-
-    stage('Clone Repository') {
-        steps {
-            git 'YOUR_GITHUB_REPO_URL'
-        }
+    environment {
+        DOCKER_USER = "shiwanishinedocker"
+        K3S_SERVER = "52.4.197.67"
     }
 
-    stage('Build Backend Image') {
-        steps {
-            sh '''
-            docker build \
-            -t $DOCKER_USER/studysync-backend:latest \
-            -f docker/backend.Dockerfile .
-            '''
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/Shiwani-Yaduka/studysync-ai.git'
+            }
         }
-    }
 
-    stage('Build Frontend Image') {
-        steps {
-            sh '''
-            docker build \
-            -t $DOCKER_USER/studysync-frontend:latest \
-            -f docker/frontend.Dockerfile .
-            '''
+        stage('Build Backend Image') {
+            steps {
+                sh '''
+                docker build \
+                -t $DOCKER_USER/studysync-backend:latest \
+                -f docker/backend.Dockerfile .
+                '''
+            }
         }
-    }
 
-    stage('Push Images') {
-        steps {
+        stage('Build Frontend Image') {
+            steps {
+                sh '''
+                docker build \
+                -t $DOCKER_USER/studysync-frontend:latest \
+                -f docker/frontend.Dockerfile .
+                '''
+            }
+        }
 
-            withCredentials([usernamePassword(
-                credentialsId: 'dockerhub-creds',
-                usernameVariable: 'DOCKER_USERNAME',
-                passwordVariable: 'DOCKER_PASSWORD'
-            )]) {
+        stage('Push Images') {
+            steps {
+
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+
+                    sh '''
+                    echo $DOCKER_PASSWORD | docker login \
+                    -u $DOCKER_USERNAME --password-stdin
+                    '''
+
+                    sh '''
+                    docker push $DOCKER_USER/studysync-backend:latest
+                    '''
+
+                    sh '''
+                    docker push $DOCKER_USER/studysync-frontend:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
 
                 sh '''
-                echo $DOCKER_PASSWORD | docker login \
-                -u $DOCKER_USERNAME --password-stdin
+                ssh ubuntu@$K3S_SERVER \
+                'KUBECONFIG=$HOME/.kube/config kubectl rollout restart deployment studysync-backend'
                 '''
 
                 sh '''
-                docker push $DOCKER_USER/studysync-backend:latest
-                '''
-
-                sh '''
-                docker push $DOCKER_USER/studysync-frontend:latest
+                ssh ubuntu@$K3S_SERVER \
+                'KUBECONFIG=$HOME/.kube/config kubectl rollout restart deployment studysync-frontend'
                 '''
             }
         }
     }
-
-    stage('Deploy to Kubernetes') {
-        steps {
-
-            sh '''
-            ssh ubuntu@$K3S_SERVER \
-            'KUBECONFIG=$HOME/.kube/config kubectl rollout restart deployment studysync-backend'
-            '''
-
-            sh '''
-            ssh ubuntu@$K3S_SERVER \
-            'KUBECONFIG=$HOME/.kube/config kubectl rollout restart deployment studysync-frontend'
-            '''
-        }
-    }
-}
-```
-
 }
