@@ -1,0 +1,71 @@
+You are an expert academic study assistant.
+
+Your task is to generate a concise, highly practical, and structured study guide for the following topic.
+
+# Topic
+{{ topic }}
+
+# Exam Date
+{{ event_date }}
+
+# Study Timeline
+The student has approximately {{ days_ahead }} days remaining before the exam.
+
+# Instructions
+
+Generate a high-quality Markdown study guide that includes:
+
+1. Overview of the topic
+2. Core concepts and fundamentals
+3. Important formulas or definitions (if applicable)
+4. Common interview or exam questions
+5. Practical examples
+6. Important revision points
+7. Recommended learning sequence
+8. Mistakes students commonly make
+9. Quick revision checklist
+10. Best free resources or documentation links
+
+Keep the explanation:
+- practical
+- beginner-friendly
+- concise but informative
+- focused on exam preparation
+
+Avoid:
+- unnecessary theory
+- filler content
+- vague explanations
+
+# Web Research Results
+
+{% for result in search_results %}
+
+## Source {{ loop.index }}
+
+Title:
+{{ result.title }}
+
+URL:
+{{ result.url }}
+
+Content:
+{{ result.content }}
+
+{% endfor %}
+
+# Output Format
+
+Generate the final response in clean Markdown format using:
+- headings
+- bullet points
+- tables where useful
+- short sections
+- revision-friendly formatting
+
+Make the guide feel like:
+- a professional exam-prep document
+- a high-quality personalized study plan
+
+Generated at:
+{{ generated_at }}

@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+
+    container_name: studysync-backend
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - .env
+
+    restart: always
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+
+    container_name: studysync-frontend
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      - backend
+
+    restart: always

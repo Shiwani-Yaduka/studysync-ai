@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: studysync-backend
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: studysync-backend
+
+  template:
+    metadata:
+      labels:
+        app: studysync-backend
+
+    spec:
+      containers:
+      - name: backend
+
+        image: shiwanishinedocker/studysync-backend:latest
+
+        ports:
+        - containerPort: 5000
+
+        envFrom:
+        - secretRef:
+            name: studysync-secret

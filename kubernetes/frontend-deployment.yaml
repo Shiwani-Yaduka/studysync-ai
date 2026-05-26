@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: studysync-frontend
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: studysync-frontend
+
+  template:
+    metadata:
+      labels:
+        app: studysync-frontend
+
+    spec:
+      containers:
+      - name: frontend
+
+        image: shiwanishinedocker/studysync-frontend:latest
+
+        ports:
+        - containerPort: 8501
